@@ -16,11 +16,11 @@ import (
 
 // Constants for the operations (names of API calls)
 const (
-	OpCreate    = "create"    // Create a new product
-	OpList      = "list"      // Getting a list of all products
-	OpDetails   = "details"   // Getting details of a product.
-	OpUpdate    = "update"    // Update a product
-	OpSetPrices = "setprices" // Set price points for different currencies for a product
+	opCreate    = "create"    // Create a new product
+	opList      = "list"      // Getting a list of all products
+	opDetails   = "details"   // Getting details of a product.
+	opUpdate    = "update"    // Update a product
+	opSetPrices = "setprices" // Set price points for different currencies for a product
 )
 
 // Store implementation to use
@@ -50,11 +50,11 @@ func createUpdateLogic(w http.ResponseWriter, r *http.Request, ch *callHandler) 
 	}
 
 	// Id must not be specified when creating a new product:
-	if ch.op == OpCreate && p.ID != 0 {
+	if ch.op == opCreate && p.ID != 0 {
 		return &JSONResp{Error: "ID must not be specified!"}
 	}
 	// Id must be specified when updating an existing product:
-	if ch.op == OpUpdate && p.ID == 0 {
+	if ch.op == opUpdate && p.ID == 0 {
 		return &JSONResp{Error: "ID must be specified!"}
 	}
 	if msg := p.Validate(); msg != "" {
@@ -215,9 +215,9 @@ func sendJSONResp(w http.ResponseWriter, resp *JSONResp) error {
 
 // init registers the HTTP handlers.
 func init() {
-	http.Handle("/"+OpCreate, &callHandler{op: OpCreate, expMethod: http.MethodPost, logic: createUpdateLogic})
-	http.Handle("/"+OpList, &callHandler{op: OpList, expMethod: http.MethodGet, logic: listLogic})
-	http.Handle("/"+OpDetails+"/", &callHandler{op: OpDetails, expMethod: http.MethodGet, logic: detailsLogic})
-	http.Handle("/"+OpUpdate, &callHandler{op: OpUpdate, expMethod: http.MethodPut, logic: createUpdateLogic})
-	http.Handle("/"+OpSetPrices, &callHandler{op: OpSetPrices, expMethod: http.MethodPut, logic: setPricesLogic})
+	http.Handle("/"+opCreate, &callHandler{op: opCreate, expMethod: http.MethodPost, logic: createUpdateLogic})
+	http.Handle("/"+opList, &callHandler{op: opList, expMethod: http.MethodGet, logic: listLogic})
+	http.Handle("/"+opDetails+"/", &callHandler{op: opDetails, expMethod: http.MethodGet, logic: detailsLogic})
+	http.Handle("/"+opUpdate, &callHandler{op: opUpdate, expMethod: http.MethodPut, logic: createUpdateLogic})
+	http.Handle("/"+opSetPrices, &callHandler{op: opSetPrices, expMethod: http.MethodPut, logic: setPricesLogic})
 }

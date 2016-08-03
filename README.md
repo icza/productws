@@ -5,19 +5,19 @@
 This project contains a [REST][1] / [JSON][2] web service demo in Go with an API to manage products.
 The following operations are supported:
 
-- Create a new product
-- Get a list of all products
-- Get details about a product
-- Able to update a product
-- Able to set price points for different currencies for a product
+- `POST /create` Create a new product
+- `GET /list` Get a list of all products
+- `GET /details/<id>` Get details about a product
+- `PUT /update` Update a product
+- `PUT /setprices` Set price points for different currencies for a product
 
 A product has the following attributes:
 
-- Product ID
-- Name
-- Description
-- Tags (optional)
-- One or more price points (at most one per currency, USD being default)
+- `Product.ID` Product ID
+- `Product.Name` Name
+- `Product.Desc` Description: 
+- `Product.Tags` Tags (optional) 
+- `Product.Prices` One or more price points (at most one per currency, USD being default)
 
 ## Install
 
@@ -31,7 +31,7 @@ Nothing else is required. The demo is a web application. To start it type (in an
 
 You may also simply start the `$GOPATH/bin/proddemo` executable. (On Windows replace `$GOPATH` with `%GOPATH%`.)
 
-The demo prints the address it's listening on. You may override it with the `-addr` command line flag.
+The demo prints the address it's listening on (defaults to `":8081"`). You may override it with the `-addr` command line flag.
 
 Test records are inserted on startup. To disable this, use the `-testdata=false` command line flag.
 

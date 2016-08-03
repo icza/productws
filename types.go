@@ -21,7 +21,7 @@ const DefaultCurrency = "USD"
 // Generally Multiplier should be a power of 10, a small value that gives
 // integer Value after multiplication.
 //
-// For example to model the price of 1.99:
+// For example to model the price value of 1.99:
 //     p := Price{Value: 199, Multiplier: 100}
 type Price struct {
 	Value      int64 // Value of the price, multiplied by Multiplier
@@ -108,7 +108,7 @@ type JSONResp struct {
 	Data interface{} `json:",omitempty"`
 }
 
-// Errors returned by this store implementation
+// Errors to use by store implementations.
 var (
 	ErrInvalidId = errors.New("Invalid Product ID")
 )
