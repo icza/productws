@@ -189,6 +189,11 @@ type callHandler struct {
 func (ch *callHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Allow JavaScript to access API calls:
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, PUT")
+	if r.Method == http.MethodOptions {
+		return
+	}
+
 	// Disable caching:
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate") // For HTTP 1.1
 	w.Header().Set("Pragma", "no-cache")                                   // For HTTP 1.0
