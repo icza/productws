@@ -4,6 +4,8 @@ This is the main package of the product web service demo application.
 
 It starts the web service with an in-memory store implementation.
 
+Test products are inserted by default (can be disabled with -testdata=false).
+
 */
 package main
 
@@ -15,15 +17,11 @@ import (
 	"net/http"
 )
 
+// Command line flags
 var (
-	addr     string // Address to start the server on (host:port)
-	testData bool   // Tells if test data should be inserted on startup
+	addr     = flag.String("addr", ":8081", "address to start server on (host:port)")
+	testData = flag.Bool("testdata", true, "tells if test data should be inserted on startup")
 )
-
-func init() {
-	flag.StringVar(&addr, "addr", ":8081", "address to start server on (host:port)")
-	flag.BoolVar(&testData, "testdata", true, "tells if test data should be inserted on startup")
-}
 
 func main() {
 	flag.Parse()
@@ -31,22 +29,33 @@ func main() {
 	store := inmemstore.NewInmemStore()
 	productws.SetStore(store)
 
-	if testData {
-		// Insert test products:
-		err := store.Save(&productws.Product{Name: "small-prod", Desc: "short-desc",
-			Prices: map[string]productws.Price{"USD": {Value: 1, Multiplier: 1}}})
-		err2 := store.Save(&productws.Product{Name: "Full-prod", Desc: "long description is entered here",
+	if *testData {
+		insertTestData(store)
+	}
+
+	log.Printf("Starting server on %q...", *addr)
+	log.Fatal(http.ListenAndServe(*addr, nil))
+}
+
+// insertTestData inserts test products into the store.
+func insertTestData(store productws.Store) {
+	ps := []*productws.Product{
+		&productws.Product{Name: "small-prod", Desc: "short-desc",
+			Prices: map[string]productws.Price{"USD": {Value: 1, Multiplier: 1}}},
+		&productws.Product{Name: "Full-prod", Desc: "long description is entered here",
 			Tags: []string{"Big", "Full", "Giant"},
 			Prices: map[string]productws.Price{
 				"USD": {Value: 100, Multiplier: 1},
 				"GBP": {Value: 7528, Multiplier: 100},
 				"HUF": {Value: 27725, Multiplier: 1},
-			}})
-		if err != nil || err2 != nil {
-			log.Printf("Failed to insert test data: %v; %v", err, err2)
-		}
+			}},
 	}
 
-	log.Printf("Starting server on %q...", addr)
-	log.Fatal(http.ListenAndServe(addr, nil))
+	for _, p := range ps {
+		if err := store.Save(p); err != nil {
+			log.Printf("Failed to insert test product ID=%d: %v", p.ID, err)
+		} else {
+			log.Printf("Test product inserted (ID=%d)", p.ID)
+		}
+	}
 }
