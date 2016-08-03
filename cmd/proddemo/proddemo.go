@@ -33,17 +33,20 @@ func main() {
 
 	if testData {
 		// Insert test products:
-		store.Save(&productws.Product{Name: "small-prod", Desc: "short-desc",
+		err := store.Save(&productws.Product{Name: "small-prod", Desc: "short-desc",
 			Prices: map[string]productws.Price{"USD": {Value: 1, Multiplier: 1}}})
-		store.Save(&productws.Product{Name: "Full-prod", Desc: "long description is entered here",
+		err2 := store.Save(&productws.Product{Name: "Full-prod", Desc: "long description is entered here",
 			Tags: []string{"Big", "Full", "Giant"},
 			Prices: map[string]productws.Price{
 				"USD": {Value: 100, Multiplier: 1},
 				"GBP": {Value: 7528, Multiplier: 100},
 				"HUF": {Value: 27725, Multiplier: 1},
 			}})
+		if err != nil || err2 != nil {
+			log.Printf("Failed to insert test data: %v; %v", err, err2)
+		}
 	}
 
-	log.Printf(`Starting server on %q...`, addr)
+	log.Printf("Starting server on %q...", addr)
 	log.Fatal(http.ListenAndServe(addr, nil))
 }

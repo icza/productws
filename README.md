@@ -90,8 +90,9 @@ Let's verify the success of update with `curl localhost:8081/details/3`:
 
 ## Implementation details
 
-The package documentation [doc.go](https://github.com/icza/productws/blob/master/doc.go) details the implementation overview.
-It can also be viewed on [godoc.org](https://godoc.org/github.com/icza/productws).
+The package documentation [doc.go](https://github.com/icza/productws/blob/master/doc.go) details the design choices
+and gives an implementation overview.
+It can also be viewed at [godoc.org](https://godoc.org/github.com/icza/productws).
 
 ## Authentication
 
@@ -111,7 +112,7 @@ On first request (which may be a "special" authentication request or just a "reg
 the client sends authentication info. If they are valid, the server generates and sends a token back.
 Subsequent requests only need to send this token.  
 Pros: Tokens are independent from passwords. Tokens may have expiration time, they may be revoked arbitrarily,
-they may be bound to IP etc. 
+they may be bound to IP etc.  
 Cons: Slightly higher complexity; the server needs to maintain tokens (tell if a token is valid). 
 
 ## Making the service redundant
