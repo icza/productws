@@ -187,6 +187,13 @@ type callHandler struct {
 // Common logic includes checking expected HTTP method, calling the logic,
 // marshaling JSON response. Also future authentication can be added here.
 func (ch *callHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Allow JavaScript to access API calls:
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	// Disable caching:
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate") // For HTTP 1.1
+	w.Header().Set("Pragma", "no-cache")                                   // For HTTP 1.0
+	w.Header().Set("Expires", "0")                                         // For proxies
+
 	// If authentication is required, it can be checked here.
 	if r.Method != ch.expMethod {
 		http.Error(w, "Method not allowed, use "+ch.expMethod, http.StatusMethodNotAllowed)
@@ -194,23 +201,13 @@ func (ch *callHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if jsonResp := ch.logic(w, r, ch); jsonResp != nil {
+		// Send JSON response
 		jsonResp.Op = ch.op
-		if err := sendJSONResp(w, jsonResp); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(jsonResp); err != nil {
 			log.Printf("Failed to send JSON response: %v", err)
 		}
 	}
-}
-
-// SendJSONResp sends a JSON response.
-func sendJSONResp(w http.ResponseWriter, resp *JSONResp) error {
-	w.Header().Set("Content-Type", "application/json")
-
-	// Disable caching:
-	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate") // For HTTP 1.1
-	w.Header().Set("Pragma", "no-cache")                                   // For HTTP 1.0
-	w.Header().Set("Expires", "0")                                         // For proxies
-
-	return json.NewEncoder(w).Encode(resp)
 }
 
 // init registers the HTTP handlers.

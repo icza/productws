@@ -1,0 +1,112 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>productws demo tester</title>
+<style>textarea {width:500px;height:80px;}</style>
+</head>
+
+<body>
+	<h1>productws demo tester</h1>
+	<div id="content">
+		Starting tester application...<br> If this text does not
+		disappear, the React app does not start properly.
+	</div>
+
+		<script src="https://npmcdn.com/react@15.3.0/dist/react.js"></script>
+		<script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.js"></script>
+		<script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- 	<script src="react.js"></script> -->
+<!-- 	<script src="react-dom.js"></script> -->
+<!-- 	<script src="browser.min.js"></script> -->
+<!-- 	<script src="jquery.min.js"></script> -->
+
+	<script type="text/babel">
+
+// Service URL
+
+var ServiceURL = React.createClass({
+	render: function() {
+		return <input id="serviceURLId" type="text" defaultValue="http://localhost:8081/" />;
+	}
+});
+
+var CreateCall = React.createClass({
+	getInitialState: function () {
+		return { request: "{\"Name\":\"JSCO Mouse\",\"Desc\":\"Computer Optical Noiseless Mouse\",\"Prices\":{\"USD\":{\"Value\":2782,\"Multiplier\":100}}}", response: "" };
+	},
+	render: function() {
+		return <div>
+			<textarea defaultValue={this.state.request} onChange={this.onChange}></textarea><br/>
+			<button onClick={this.handleClick}>CREATE</button><br/>
+			<textarea readOnly="true" value={this.state.response}></textarea>
+		</div>;
+	},
+	handleClick: function(event) {
+		t.setState({request: event.target.value});
+	},
+	handleClick: function() {
+		var t = this;
+		$.ajax({
+			url: document.getElementById("serviceURLId").value + "create",
+			type: 'POST',
+			data: t.state.request,
+			dataType: 'json',
+			success: function(data) {
+				t.setState({request: t.state.request, response : JSON.stringify(data)});
+			},
+			error: function(xhr, status, err) {
+				t.setState({response : "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText});
+			}
+		});
+	}
+});
+
+var ListCall = React.createClass({
+	getInitialState: function () {
+		return { response: "" };
+	},
+	render: function() {
+		return <div>
+			<button onClick={this.handleClick}>LIST</button><br/>
+			<textarea readOnly="true" value={this.state.response}></textarea>
+		</div>;
+	},
+	handleClick: function() {
+		var t = this;
+		$.ajax({
+			url: document.getElementById("serviceURLId").value + "list",
+			dataType: 'json',
+			success: function(data) {
+				t.setState({response : JSON.stringify(data)});
+			},
+			error: function(xhr, status, err) {
+				t.setState({response : "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText});
+			}
+		});
+	}
+});
+
+// Application
+
+var TesterApp = React.createClass({
+	render: function() {
+		return <div>
+			<div>Service URL: <ServiceURL /></div>
+			<h3>Create a new product</h3>
+			<CreateCall/>
+			<h3>List all product IDs</h3>
+			<ListCall/>
+		</div>;
+	}
+});
+
+ReactDOM.render(
+		<TesterApp />,
+		document.getElementById('content')
+);
+
+</script>
+
+</body>
+</html>
