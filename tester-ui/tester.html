@@ -23,7 +23,10 @@
 
 	<script type="text/babel">
 
-// Service URL
+function errorMsg(xhr, status, err) {
+	return "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText
+		+(xhr.readyState == 0 ? "\nService unavailable! Wrong URL?" : "");
+}
 
 var ServiceURL = React.createClass({
 	render: function() {
@@ -37,9 +40,11 @@ var CreateCall = React.createClass({
 	},
 	render: function() {
 		return <div>
+			Product JSON:<br/>
 			<textarea value={this.state.request} onChange={this.onChange}></textarea><br/>
-			<button onClick={this.handleClick}>CREATE</button> <code>POST /create</code><br/>
-			<textarea value={this.state.response}></textarea>
+			<button onClick={this.handleClick}>CREATE</button> <code>"POST /create"</code><br/>
+			Response:<br/>
+			<textarea readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},
 	onChange: function(event) {
@@ -56,7 +61,7 @@ var CreateCall = React.createClass({
 				t.setState({response : JSON.stringify(data)});
 			},
 			error: function(xhr, status, err) {
-				t.setState({response : "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText});
+				t.setState({response : errorMsg(xhr, status, err)});
 			}
 		});
 	}
@@ -68,7 +73,8 @@ var ListCall = React.createClass({
 	},
 	render: function() {
 		return <div>
-			<button onClick={this.handleClick}>LIST</button> <code>GET /list</code><br/>
+			<button onClick={this.handleClick}>LIST</button> <code>"GET /list"</code><br/>
+			Response:<br/>
 			<textarea readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},
@@ -76,18 +82,45 @@ var ListCall = React.createClass({
 		var t = this;
 		$.ajax({
 			url: document.getElementById("serviceURLId").value + "list",
-			dataType: 'json',
 			success: function(data) {
 				t.setState({response : JSON.stringify(data)});
 			},
 			error: function(xhr, status, err) {
-				t.setState({response : "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText});
+				t.setState({response : errorMsg(xhr, status, err)});
 			}
 		});
 	}
 });
 
-// Application
+var DetailsCall = React.createClass({
+	getInitialState: function () {
+		return {id: ""};
+	},
+	render: function() {
+		return <div>
+			Product ID:<br/>
+			<input type="text" value={this.state.id} onChange={this.onChange}></input><br/>
+			<button onClick={this.handleClick}>DETAILS</button> <code>"GET /details/{this.state.id}"</code><br/>
+			Response:<br/>
+			<textarea readOnly="true" value={this.state.response}></textarea>
+		</div>;
+	},
+	onChange: function(event) {
+		this.setState({id: event.target.value});
+	},
+	handleClick: function() {
+		var t = this;
+		$.ajax({
+			url: document.getElementById("serviceURLId").value + "details/" + t.state.id,
+			success: function(data) {
+				t.setState({response : JSON.stringify(data)});
+			},
+			error: function(xhr, status, err) {
+				t.setState({response : errorMsg(xhr, status, err)});
+			}
+		});
+	}
+});
 
 var TesterApp = React.createClass({
 	render: function() {
@@ -97,13 +130,15 @@ var TesterApp = React.createClass({
 			<CreateCall/>
 			<h3>List all product IDs</h3>
 			<ListCall/>
+			<h3>Get details of a product</h3>
+			<DetailsCall/>
 		</div>;
 	}
 });
 
 ReactDOM.render(
-		<TesterApp />,
-		document.getElementById('content')
+	<TesterApp />,
+	document.getElementById('content')
 );
 
 </script>
