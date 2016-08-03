@@ -33,17 +33,17 @@ var ServiceURL = React.createClass({
 
 var CreateCall = React.createClass({
 	getInitialState: function () {
-		return { request: "{\"Name\":\"JSCO Mouse\",\"Desc\":\"Computer Optical Noiseless Mouse\",\"Prices\":{\"USD\":{\"Value\":2782,\"Multiplier\":100}}}", response: "" };
+		return { request: "{\"Name\":\"JSCO Mouse\",\"Desc\":\"Computer Optical Noiseless Mouse\",\"Prices\":{\"USD\":{\"Value\":2782,\"Multiplier\":100}}}"};
 	},
 	render: function() {
 		return <div>
-			<textarea defaultValue={this.state.request} onChange={this.onChange}></textarea><br/>
-			<button onClick={this.handleClick}>CREATE</button><br/>
-			<textarea readOnly="true" value={this.state.response}></textarea>
+			<textarea value={this.state.request} onChange={this.onChange}></textarea><br/>
+			<button onClick={this.handleClick}>CREATE</button> <code>POST /create</code><br/>
+			<textarea value={this.state.response}></textarea>
 		</div>;
 	},
-	handleClick: function(event) {
-		t.setState({request: event.target.value});
+	onChange: function(event) {
+		this.setState({request: event.target.value});
 	},
 	handleClick: function() {
 		var t = this;
@@ -53,7 +53,7 @@ var CreateCall = React.createClass({
 			data: t.state.request,
 			dataType: 'json',
 			success: function(data) {
-				t.setState({request: t.state.request, response : JSON.stringify(data)});
+				t.setState({response : JSON.stringify(data)});
 			},
 			error: function(xhr, status, err) {
 				t.setState({response : "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText});
@@ -64,11 +64,11 @@ var CreateCall = React.createClass({
 
 var ListCall = React.createClass({
 	getInitialState: function () {
-		return { response: "" };
+		return {};
 	},
 	render: function() {
 		return <div>
-			<button onClick={this.handleClick}>LIST</button><br/>
+			<button onClick={this.handleClick}>LIST</button> <code>GET /list</code><br/>
 			<textarea readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},

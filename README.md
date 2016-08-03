@@ -2,7 +2,8 @@
 
 [![GoDoc](https://godoc.org/github.com/icza/productws?status.svg)](https://godoc.org/github.com/icza/productws)
 
-This project contains a [REST][1] / [JSON][2] web service demo in Go with an API to manage products.
+This project contains a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) /
+[JSON](https://en.wikipedia.org/wiki/JSON) web service demo in Go with an API to manage products.
 The following operations are supported:
 
 - `POST /create` Create a new product
@@ -38,7 +39,11 @@ Test records are inserted on startup. To disable this, use the `-testdata=false`
 
 ## Testing
 
-You may use the [cURL](https://en.wikipedia.org/wiki/CURL) tool to query the web service.
+For easy testing of the web service, check out the [tester-ui/tester.html](https://github.com/icza/productws/blob/master/doc.go)
+simple HTML page built using [React](https://facebook.github.io/react/).
+It provides UI for calling all the operations, allows you to edit data and see response. 
+
+For automated testing you may use the [cURL](https://en.wikipedia.org/wiki/CURL) tool to query the web service.
 
 To create a new product:
 
@@ -122,7 +127,3 @@ If we want the service to scale and / or to make it redundant, we have to replac
 on multiple nodes without any problem. Multiple nodes may have and they may be reached at different addresses;
 a load balancer / router may be started to coordinate requests and maintain equal distribution.
 
-
-  [1]: https://en.wikipedia.org/wiki/Representational_state_transfer
-  [2]: https://en.wikipedia.org/wiki/JSON
-  
