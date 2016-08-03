@@ -51,5 +51,4 @@ in GBP and HUF currencies, then the GBP price will be updated, HUF added
 and USD left intact. If currency removal is required, update call can (should) be used.
 
 */
-
 package productws
