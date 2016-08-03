@@ -41,9 +41,10 @@ Test records are inserted on startup. To disable this, use the `-testdata=false`
 
 For easy testing of the web service, check out the [tester-ui/tester.html](https://github.com/icza/productws/blob/master/tester-ui/tester.html)
 simple HTML page built using [React](https://facebook.github.io/react/).
-It provides UI for calling all the operations, allows you to edit data and see response. 
+It provides UI for calling all the operations, allows you to edit request data and see response.
+Simply open `tester.html` in your browser and you can do the rest on the web page. 
 
-For automated testing you may use the [cURL](https://en.wikipedia.org/wiki/CURL) tool to query the web service.
+For automated and more customizable testing, you may use the [cURL](https://en.wikipedia.org/wiki/CURL) tool to query the web service.
 
 To create a new product:
 
