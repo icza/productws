@@ -2,7 +2,16 @@
 <head>
 <meta charset="utf-8">
 <title>productws demo tester</title>
-<style>textarea {width:500px;height:80px;}</style>
+<style>
+	html {display: table; margin: auto;}
+	body {display: table-cell; font-family: Arial; color:#555;}
+	button {width:120px; margin:3px 0px 3px 0px;}
+	textarea {width:600px; height:80px;}
+	input {display: table-cell; width:100%}
+	code {color: green; background: #eee; padding: 3px;}
+	h1 {text-align:center;color:#222}
+	h2 {font-size:1.3em; margin:10px 0px 5px 0px;color:black;}
+</style>
 </head>
 
 <body>
@@ -12,10 +21,10 @@
 		disappear, the React app does not start properly.
 	</div>
 
-		<script src="https://npmcdn.com/react@15.3.0/dist/react.js"></script>
-		<script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.js"></script>
-		<script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://npmcdn.com/react@15.3.0/dist/react.js"></script>
+	<script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.js"></script>
+	<script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- 	<script src="react.js"></script> -->
 <!-- 	<script src="react-dom.js"></script> -->
 <!-- 	<script src="browser.min.js"></script> -->
@@ -23,20 +32,27 @@
 
 	<script type="text/babel">
 
-function errorMsg(xhr, status, err) {
-	return "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText
-		+(xhr.readyState == 0 ? "\nService unavailable! Wrong URL?" : "");
+function errorObj(xhr, status, err) {
+	return {response: "ERROR: " + xhr.status + " " + err.toString() + "\n" + xhr.responseText
+		+(xhr.readyState == 0 ? "\nService unavailable! Wrong Service URL?" : "")};
+}
+
+function serviceURL() {
+	return document.getElementById("serviceURLId").value;
 }
 
 var ServiceURL = React.createClass({
 	render: function() {
-		return <input id="serviceURLId" type="text" defaultValue="http://localhost:8081/" />;
+		return <div className="serviceURL">
+			Service URL:
+			<input id="serviceURLId" type="text" defaultValue="http://localhost:8081/" />
+		</div>;
 	}
 });
 
 var CreateCall = React.createClass({
 	getInitialState: function () {
-		return { request: "{\"Name\":\"JSCO Mouse\",\"Desc\":\"Computer Optical Noiseless Mouse\",\"Prices\":{\"USD\":{\"Value\":2782,\"Multiplier\":100}}}"};
+		return { request: '{"Name":"JSCO Mouse","Desc":"Computer Optical Noiseless Mouse","Prices":{"USD":{"Value":2782,"Multiplier":100}}}' };
 	},
 	render: function() {
 		return <div>
@@ -52,17 +68,14 @@ var CreateCall = React.createClass({
 	},
 	handleClick: function() {
 		var t = this;
+		t.setState({response : "Calling web service..."});
 		$.ajax({
-			url: document.getElementById("serviceURLId").value + "create",
+			url: serviceURL() + "create",
 			type: 'POST',
 			data: t.state.request,
 			dataType: 'json',
-			success: function(data) {
-				t.setState({response : JSON.stringify(data)});
-			},
-			error: function(xhr, status, err) {
-				t.setState({response : errorMsg(xhr, status, err)});
-			}
+			success: function(data) { t.setState({response : JSON.stringify(data)}); },
+			error: function(xhr, status, err) {	t.setState(errorObj(xhr, status, err)); }
 		});
 	}
 });
@@ -80,21 +93,18 @@ var ListCall = React.createClass({
 	},
 	handleClick: function() {
 		var t = this;
+		t.setState({response : "Calling web service..."});
 		$.ajax({
-			url: document.getElementById("serviceURLId").value + "list",
-			success: function(data) {
-				t.setState({response : JSON.stringify(data)});
-			},
-			error: function(xhr, status, err) {
-				t.setState({response : errorMsg(xhr, status, err)});
-			}
+			url: serviceURL() + "list",
+			success: function(data) { t.setState({response : JSON.stringify(data)}); },
+			error: function(xhr, status, err) {	t.setState(errorObj(xhr, status, err)); }
 		});
 	}
 });
 
 var DetailsCall = React.createClass({
 	getInitialState: function () {
-		return {id: ""};
+		return {id: "3"};
 	},
 	render: function() {
 		return <div>
@@ -110,14 +120,71 @@ var DetailsCall = React.createClass({
 	},
 	handleClick: function() {
 		var t = this;
+		t.setState({response : "Calling web service..."});
 		$.ajax({
-			url: document.getElementById("serviceURLId").value + "details/" + t.state.id,
-			success: function(data) {
-				t.setState({response : JSON.stringify(data)});
-			},
-			error: function(xhr, status, err) {
-				t.setState({response : errorMsg(xhr, status, err)});
-			}
+			url: serviceURL() + "details/" + t.state.id,
+			success: function(data) { t.setState({response : JSON.stringify(data)}); },
+			error: function(xhr, status, err) {	t.setState(errorObj(xhr, status, err)); }
+		});
+	}
+});
+
+var UpdateCall = React.createClass({
+	getInitialState: function () {
+		return { request: '{"ID":3,"Name":"JSCO Mouse","Desc":"Computer Optical Noiseless Mouse","Tags":["Computer","Mouse"],"Prices":{"USD":{"Value":2782,"Multiplier":100},"GBP":{"Value":2093,"Multiplier":100}}}' };
+	},
+	render: function() {
+		return <div>
+			Product JSON:<br/>
+			<textarea value={this.state.request} onChange={this.onChange}></textarea><br/>
+			<button onClick={this.handleClick}>UPDATE</button> <code>"PUT /update"</code><br/>
+			Response:<br/>
+			<textarea readOnly="true" value={this.state.response}></textarea>
+		</div>;
+	},
+	onChange: function(event) {
+		this.setState({request: event.target.value});
+	},
+	handleClick: function() {
+		var t = this;
+		t.setState({response : "Calling web service..."});
+		$.ajax({
+			url: serviceURL() + "update",
+			type: 'PUT',
+			data: t.state.request,
+			dataType: 'json',
+			success: function(data) { t.setState({response : JSON.stringify(data)}); },
+			error: function(xhr, status, err) {	t.setState(errorObj(xhr, status, err)); }
+		});
+	}
+});
+
+var SetpricesCall = React.createClass({
+	getInitialState: function () {
+		return { request: '{"ID":3,"Prices":{"GBP":{"Value":1999,"Multiplier":100},"HUF":{"Value":7717,"Multiplier":1}}}' };
+	},
+	render: function() {
+		return <div>
+			Product JSON:<br/>
+			<textarea value={this.state.request} onChange={this.onChange}></textarea><br/>
+			<button onClick={this.handleClick}>SET PRICES</button> <code>"PUT /setprices"</code><br/>
+			Response:<br/>
+			<textarea readOnly="true" value={this.state.response}></textarea>
+		</div>;
+	},
+	onChange: function(event) {
+		this.setState({request: event.target.value});
+	},
+	handleClick: function() {
+		var t = this;
+		t.setState({response : "Calling web service..."});
+		$.ajax({
+			url: serviceURL() + "setprices",
+			type: 'PUT',
+			data: t.state.request,
+			dataType: 'json',
+			success: function(data) { t.setState({response : JSON.stringify(data)}); },
+			error: function(xhr, status, err) {	t.setState(errorObj(xhr, status, err)); }
 		});
 	}
 });
@@ -125,13 +192,12 @@ var DetailsCall = React.createClass({
 var TesterApp = React.createClass({
 	render: function() {
 		return <div>
-			<div>Service URL: <ServiceURL /></div>
-			<h3>Create a new product</h3>
-			<CreateCall/>
-			<h3>List all product IDs</h3>
-			<ListCall/>
-			<h3>Get details of a product</h3>
-			<DetailsCall/>
+			<ServiceURL/>
+			<h2>Create a new product</h2>     <CreateCall/>
+			<h2>List all product IDs</h2>     <ListCall/>
+			<h2>Get details of a product</h2> <DetailsCall/>
+			<h2>Update a product</h2>         <UpdateCall/>
+			<h2>Set price points</h2>         <SetpricesCall/>
 		</div>;
 	}
 });
