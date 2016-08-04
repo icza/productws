@@ -18,8 +18,7 @@ func init() {
 	})
 }
 
-var tester_html = `
-<!DOCTYPE html>
+var tester_html = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
