@@ -26,11 +26,11 @@ var tester_html = `<!DOCTYPE html>
 <style>
 	html {display: table; margin: auto;}
 	body {display: table-cell; font-family: Arial; color: #666;}
-	textarea {height:60px; color: #222;}
+	textarea {height: 60px; color: #222;}
 	code {color: green; background: #eee; padding: 3px;}
 	h1 {text-align:center; color:#222;}
-	h2 {font-size:1.3em; margin:10px 0px 5px 0px; color:black;}
-	button {width: 120px; margin:3px 0px 3px 0px; display: inline-block; color: white; background: #007aec; border-radius: 3px; }
+	h2 {font-size:1.3em; margin:10px 0px 10px 0px; color:black; border-bottom: 1px solid #aa8; background-color: #fff8d0; padding: 3px;}
+	button {width: 120px; margin:3px 0px 3px 0px; display: inline-block; color: white; background: #007aec; border-radius: 3px;}
 	button:hover {background: #005aca; text-decoration: none;}
 	.req, .resp {padding-left: 5px; width: 750px;}
 	.req {border-left: 10px solid #9e9;}
