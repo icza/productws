@@ -28,6 +28,19 @@ type Price struct {
 	Multiplier int64 // Multiplier: Value = price * Multiplier
 }
 
+// Validate validates a Price.
+// Returns an empty string if price is valid, else an error message.
+func (p *Price) Validate() string {
+	if p.Value < 0 {
+		return "Price Value must be non-negative!"
+	}
+	if p.Multiplier < 1 {
+		return "Price Multiplier must be positive!"
+	}
+
+	return ""
+}
+
 // ID is the type of product IDs.
 type ID int64
 
@@ -59,11 +72,8 @@ func (p *Product) Validate() string {
 	}
 
 	for _, v := range p.Prices {
-		if v.Value < 0 {
-			return "Price Value must be non-negative!"
-		}
-		if v.Multiplier < 1 {
-			return "Price Multiplier must be positive!"
+		if msg := v.Validate(); msg != "" {
+			return msg
 		}
 	}
 	// Price for default currency must be present

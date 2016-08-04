@@ -135,11 +135,8 @@ func setPricesLogic(w http.ResponseWriter, r *http.Request, ch *callHandler) *JS
 		return &JSONResp{Error: "Prices must be specified!"}
 	}
 	for _, v := range p.Prices {
-		if v.Value < 0 {
-			return &JSONResp{Error: "Price Value must be non-negative!"}
-		}
-		if v.Multiplier < 1 {
-			return &JSONResp{Error: "Price Multiplier must be positive!"}
+		if msg := v.Validate(); msg != "" {
+			return &JSONResp{Error: msg}
 		}
 	}
 
