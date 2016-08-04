@@ -122,7 +122,7 @@ type Store interface {
 	// AllIDs returns the list of all product IDs.
 	AllIDs() ([]ID, error)
 
-	// Save saves a new Product.
+	// Save saves a Product.
 	// If ID of the product is 0, it is saved anew.
 	// Else it updates an existing product.
 	// ErrInvalidId should be returned if p.Id is not 0 but no product exists with that ID.

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -11,6 +12,7 @@
 	code {color: green; background: #eee; padding: 3px;}
 	h1 {text-align:center;color:#222}
 	h2 {font-size:1.3em; margin:10px 0px 5px 0px;color:black;}
+	.footer {background: #ddd; padding: 6px 10px 6px 10px; border-top: 1px solid #aaa; font-style: italic; font-size: 0.8em; margin-top:3px; text-align:center;}
 </style>
 </head>
 
@@ -193,11 +195,12 @@ var TesterApp = React.createClass({
 	render: function() {
 		return <div>
 			<ServiceURL/>
-			<h2>Create a new product</h2>     <CreateCall/>
-			<h2>List all product IDs</h2>     <ListCall/>
+			<h2>Create a new product</h2> <CreateCall/>
+			<h2>List all product IDs</h2> <ListCall/>
 			<h2>Get details of a product</h2> <DetailsCall/>
-			<h2>Update a product</h2>         <UpdateCall/>
-			<h2>Set price points</h2>         <SetpricesCall/>
+			<h2>Update a product</h2> <UpdateCall/>
+			<h2>Set price points</h2> <SetpricesCall/>
+			<div className="footer">Visit <a href="https://github.com/icza/productws" target="_blank">github.com/icza/productws</a></div>
 		</div>;
 	}
 });
