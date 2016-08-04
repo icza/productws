@@ -1,8 +1,8 @@
 /*
 
-Package htmltester includes the tester.html and makes it available on /tester.html path.
+Package htmltester includes the tester.html and makes it available under the /tester.html path.
 
-Include this packages if you want the product demo to self-contain the tester page.
+Include this packages if you want the executable binary to self-contain the tester page.
 
 */
 package htmltester

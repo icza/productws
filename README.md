@@ -39,11 +39,12 @@ Test records are inserted on startup. To disable this, use the `-testdata=false`
 
 ## Testing
 
-For easy testing of the web service, the demo contains a simple HTML page built using [React](https://facebook.github.io/react/).  
-It is available here: [html-tester/tester.html](https://github.com/icza/productws/blob/master/html-tester/tester.html).  
+For easy testing of the web service, the demo contains a simple HTML page built using [React](https://facebook.github.io/react/). 
 It provides UI for calling all the operations, allows you to edit request data and see response.
-Simply open `tester.html` in your browser and you can do the rest on the web page.  
-By default the `tester.html` is also self-contained and made available under the `/tester.html` path of the demo.
+It is available here: [html-tester/tester.html](https://github.com/icza/productws/blob/master/html-tester/tester.html).
+Simply open `tester.html` in your browser and you can do the rest from the web page.
+
+By default the `tester.html` is also self-contained and made available under the `/tester.html` path of the demo app.
 
 For automated and more customizable testing, you may use the [cURL](https://en.wikipedia.org/wiki/CURL) tool to query the web service.
 
@@ -116,7 +117,7 @@ Cons: Password is sent unencrypted with all requests, should only be used over H
 A _token_ may be used instead of user+password. The token may be sent in HTTP headers, as request parameters
 (or even in the request body).  
 On first request (which may be a "special" authentication request or just a "regular" request)
-the client sends authentication info. If they are valid, the server generates and sends a token back.
+the client sends authentication info. If they are valid, the server generates and sends back a token.
 Subsequent requests only need to send this token.  
 Pros: Tokens are independent from passwords. Tokens may have expiration time, they may be revoked arbitrarily,
 they may be bound to IP etc.  
@@ -127,5 +128,5 @@ Cons: Slightly higher complexity; the server needs to maintain tokens (tell if a
 If we want the service to scale and / or to make it redundant, we have to replace the Store implementation
 (obviously multiple service nodes needs to see the same data). Other than that, the service may be started
 on multiple nodes without any problem. Multiple nodes may have and they may be reached at different addresses;
-a load balancer / router may be started to coordinate requests and maintain equal distribution.
+a load balancer / router may be started up to coordinate requests and maintain equal distribution.
 

@@ -1,6 +1,6 @@
 /*
 
-This is the main package of the product web service demo application.
+Package main is the main package of the product web service demo application.
 
 It starts the web service with an in-memory store implementation.
 
