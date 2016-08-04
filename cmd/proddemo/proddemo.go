@@ -6,12 +6,16 @@ It starts the web service with an in-memory store implementation.
 
 Test products are inserted by default (can be disabled with -testdata=false).
 
+Also imports html-tester, so the tester page will be self-contained and made available under
+    /tester.html
+
 */
 package main
 
 import (
 	"flag"
 	"github.com/icza/productws"
+	_ "github.com/icza/productws/html-tester"
 	"github.com/icza/productws/inmemstore"
 	"log"
 	"net/http"

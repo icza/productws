@@ -39,10 +39,11 @@ Test records are inserted on startup. To disable this, use the `-testdata=false`
 
 ## Testing
 
-For easy testing of the web service, check out the [html-tester/tester.html](https://github.com/icza/productws/blob/master/html-tester/tester.html)
-simple HTML page built using [React](https://facebook.github.io/react/).
+For easy testing of the web service, the demo contains a simple HTML page built using [React](https://facebook.github.io/react/).  
+It is available here: [html-tester/tester.html](https://github.com/icza/productws/blob/master/html-tester/tester.html).  
 It provides UI for calling all the operations, allows you to edit request data and see response.
-Simply open `tester.html` in your browser and you can do the rest on the web page. 
+Simply open `tester.html` in your browser and you can do the rest on the web page.  
+By default the `tester.html` is also self-contained and made available under the `/tester.html` path of the demo.
 
 For automated and more customizable testing, you may use the [cURL](https://en.wikipedia.org/wiki/CURL) tool to query the web service.
 

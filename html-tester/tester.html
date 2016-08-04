@@ -6,13 +6,16 @@
 <style>
 	html {display: table; margin: auto;}
 	body {display: table-cell; font-family: Arial; color: #666;}
-	button {width:120px; margin:3px 0px 3px 0px;}
-	textarea {width:750px; height:60px; color: #222;}
-	input {display: table-cell; width:100%}
+	textarea {height:60px; color: #222;}
 	code {color: green; background: #eee; padding: 3px;}
-	h1 {text-align:center;color:#222}
-	h2 {font-size:1.3em; margin:10px 0px 5px 0px;color:black;}
-	.footer {background: #eee; padding: 6px 10px 6px 10px; border-top: 1px solid #aaa; font-style: italic; font-size: 0.8em; margin-top:3px; text-align:center;}
+	h1 {text-align:center; color:#222;}
+	h2 {font-size:1.3em; margin:10px 0px 5px 0px; color:black;}
+	button {width: 120px; margin:3px 0px 3px 0px; display: inline-block; color: white; background: #007aec; border-radius: 3px; }
+	button:hover {background: #005aca; text-decoration: none;}
+	.req, .resp {padding-left: 5px; width: 750px;}
+	.req {border-left: 10px solid #9e9;}
+	.resp {border-left: 10px solid #faa; background-color: #f6f6f6;}
+	.footer {background: #fff; padding: 6px 10px 6px 10px; border-top: 1px solid #aaa; font-style: italic; font-size: 0.8em; margin-top:3px; text-align:center;}
 </style>
 </head>
 
@@ -20,18 +23,14 @@
 	<h1>productws demo tester</h1>
 	<div id="content">
 		Loading tester application...<br> If this text does not
-		disappear shortly, the React app didn't start properly.
+		disappear shortly, the React app has problems startup up.
 	</div>
 
 	<script src="https://npmcdn.com/react@15.3.0/dist/react.js"></script>
 	<script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.js"></script>
 	<script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- 	<script src="react.js"></script> -->
-<!-- 	<script src="react-dom.js"></script> -->
-<!-- 	<script src="browser.min.js"></script> -->
-<!-- 	<script src="jquery.min.js"></script> -->
-
+	
 	<script type="text/babel">
 
 // Enable cross domain request (IE, Edge needs it!)
@@ -49,8 +48,8 @@ function serviceURL() {
 var ServiceURL = React.createClass({
 	render: function() {
 		return <div className="serviceURL">
-			Service URL:
-			<input id="serviceURLId" type="text" defaultValue="http://localhost:8081/" />
+			Service URL:<br/>
+			<input className="req" id="serviceURLId" type="text" defaultValue="http://localhost:8081/" />
 		</div>;
 	}
 });
@@ -62,10 +61,10 @@ var CreateCall = React.createClass({
 	render: function() {
 		return <div>
 			Product JSON:<br/>
-			<textarea value={this.state.request} onChange={this.onChange}></textarea><br/>
+			<textarea className="req" value={this.state.request} onChange={this.onChange}></textarea><br/>
 			<button onClick={this.handleClick}>CREATE</button> <code>"POST /create"</code><br/>
 			Response:<br/>
-			<textarea readOnly="true" value={this.state.response}></textarea>
+			<textarea className="resp" readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},
 	onChange: function(event) {
@@ -93,7 +92,7 @@ var ListCall = React.createClass({
 		return <div>
 			<button onClick={this.handleClick}>LIST</button> <code>"GET /list"</code><br/>
 			Response:<br/>
-			<textarea readOnly="true" value={this.state.response}></textarea>
+			<textarea className="resp" readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},
 	handleClick: function() {
@@ -114,10 +113,10 @@ var DetailsCall = React.createClass({
 	render: function() {
 		return <div>
 			Product ID:<br/>
-			<input type="text" value={this.state.id} onChange={this.onChange}></input><br/>
+			<input className="req" type="text" value={this.state.id} onChange={this.onChange}></input><br/>
 			<button onClick={this.handleClick}>DETAILS</button> <code>"GET /details/{this.state.id}"</code><br/>
 			Response:<br/>
-			<textarea readOnly="true" value={this.state.response}></textarea>
+			<textarea className="resp" readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},
 	onChange: function(event) {
@@ -141,10 +140,10 @@ var UpdateCall = React.createClass({
 	render: function() {
 		return <div>
 			Product JSON:<br/>
-			<textarea value={this.state.request} onChange={this.onChange}></textarea><br/>
+			<textarea className="req" value={this.state.request} onChange={this.onChange}></textarea><br/>
 			<button onClick={this.handleClick}>UPDATE</button> <code>"PUT /update"</code><br/>
 			Response:<br/>
-			<textarea readOnly="true" value={this.state.response}></textarea>
+			<textarea className="resp" readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},
 	onChange: function(event) {
@@ -171,10 +170,10 @@ var SetpricesCall = React.createClass({
 	render: function() {
 		return <div>
 			Product JSON:<br/>
-			<textarea value={this.state.request} onChange={this.onChange}></textarea><br/>
+			<textarea className="req" value={this.state.request} onChange={this.onChange}></textarea><br/>
 			<button onClick={this.handleClick}>SET PRICES</button> <code>"PUT /setprices"</code><br/>
 			Response:<br/>
-			<textarea readOnly="true" value={this.state.response}></textarea>
+			<textarea className="resp" readOnly="true" value={this.state.response}></textarea>
 		</div>;
 	},
 	onChange: function(event) {
